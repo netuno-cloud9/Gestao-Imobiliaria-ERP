@@ -20,58 +20,55 @@ public class GestaoImobiliariaApp {
         Imovel imovel = null;
         Locacao locacao = null;
         
-        if (escolha == 1) {
-            // Insercao manual de dados
-            System.out.println("\n=== Insercao de Dados Manual ===");
-            
-            corretor = criarCorretor(scanner);
-            proprietario = criarProprietario(scanner);
-            locatario = criarLocatario(scanner);
-            
-            // Perguntar se o imovel e casa ou apartamento
-            System.out.println("O imovel e uma casa ou um apartamento?");
-            System.out.println("Digite '1' para Casa ou '2' para Apartamento:");
-            int tipoImovel = scanner.nextInt();
-            scanner.nextLine(); // consumir a quebra de linha
+        switch (escolha) {
+            case 1 -> {
+                // Insercao manual de dados
+                System.out.println("\n=== Insercao de Dados Manual ===");
+                corretor = criarCorretor(scanner);
+                proprietario = criarProprietario(scanner);
+                locatario = criarLocatario(scanner);
+                // Perguntar se o imovel e casa ou apartamento
+                System.out.println("O imovel e uma casa ou um apartamento?");
+                System.out.println("Digite '1' para Casa ou '2' para Apartamento:");
+                int tipoImovel = scanner.nextInt();
+                scanner.nextLine(); // consumir a quebra de linha
+                switch (tipoImovel) {
+                    case 1:
+                        imovel = criarCasa(scanner);
+                        break;
+                    case 2:
+                        imovel = criarApartamento(scanner);
+                        break;
+                    default:
+                        System.out.println("Opcao invalida para tipo de imovel.");
+                        scanner.close();
+                        return; // Criacao de locacao
+                }
+                locacao = new Locacao(imovel, locatario, corretor, proprietario, new Date());
+            }
 
-            if (tipoImovel == 1) {
-                imovel = criarCasa(scanner);
-            } else if (tipoImovel == 2) {
-                imovel = criarApartamento(scanner);
-            } else {
-                System.out.println("Opcao invalida para tipo de imovel.");
+            case 2 -> {
+                // Geracao automatica de dados de teste com contexto de Feira de Santana, Bahia
+                
+                // Criacao de um corretor
+                corretor = new Corretor("John Lenon", "(75) 98765-4321", "Rua das Flores, 123, Feira de Santana, Bahia",
+                        "123.456.789-00", "1234-BA", new Date(), 0.05);
+                // Criacao de um proprietario
+                proprietario = new Proprietario("Bob Dylan", "(75) 91234-5678",
+                        "Rua dos Pinheiros, 456, Feira de Santana, Bahia", "987.654.321-00", "12345-6", "001");
+                // Criacao de um locatario
+                locatario = new Locatario("Garfield o Gato", "(75) 99876-5432",
+                        "Av. Getulio Vargas, 789, Feira de Santana, Bahia", "321.654.987-00", "garfield@gmail.com", 5000);
+                // Criacao de um imovel (por exemplo, Casa)
+                imovel = new Casa(101, "Rua das Palmeiras, 123, Feira de Santana, Bahia", 2000, 2, 3, 2, 1);
+                // Criacao de uma locacao
+                locacao = new Locacao(imovel, locatario, corretor, proprietario, new Date());
+            }
+            default -> {
+                System.out.println("Opcao invalida.");
                 scanner.close();
                 return;
             }
-            
-            // Criacao de locacao
-            locacao = new Locacao(imovel, locatario, corretor, proprietario, new Date());
-            
-        } else if (escolha == 2) {
-            // Geracao automatica de dados de teste com contexto de Feira de Santana, Bahia
-            
-            // Criacao de um corretor
-            corretor = new Corretor("John Lenon", "(75) 98765-4321", "Rua das Flores, 123, Feira de Santana, Bahia",
-                    "123.456.789-00", "1234-BA", new Date(), 0.05);
-    
-            // Criacao de um proprietario
-            proprietario = new Proprietario("Bob Dylan", "(75) 91234-5678",
-                    "Rua dos Pinheiros, 456, Feira de Santana, Bahia", "987.654.321-00", "12345-6", "001");
-    
-            // Criacao de um locatario
-            locatario = new Locatario("Garfield o Gato", "(75) 99876-5432",
-                    "Av. Getulio Vargas, 789, Feira de Santana, Bahia", "321.654.987-00", "garfield@gmail.com", 5000);
-    
-            // Criacao de um imovel (por exemplo, Casa)
-            imovel = new Casa(101, "Rua das Palmeiras, 123, Feira de Santana, Bahia", 2000, 2, 3, 2, 1);
-    
-            // Criacao de uma locacao
-            locacao = new Locacao(imovel, locatario, corretor, proprietario, new Date());
-            
-        } else {
-            System.out.println("Opcao invalida.");
-            scanner.close();
-            return;
         }
         
         // Codigo comum para ambas as opcoes

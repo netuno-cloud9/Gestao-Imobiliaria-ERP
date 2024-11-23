@@ -17,7 +17,7 @@ public class Proprietario extends Pessoa implements RecebeValor {
      * 
      * @param nome Nome do proprietário.
      * @param telefone Telefone do proprietário.
-     * @param endereco Endereço do proprietário.
+     * @param endereco Endereco do proprietário.
      * @param cpf CPF do proprietário.
      * @param conta Conta bancária.
      * @param agencia Agência bancária.

@@ -14,8 +14,8 @@ package aluno_unisenai.gestao_imobiliaria;
 public abstract class Imovel {
     // Atributos protegidos, acessíveis por subclasses
     protected int codigo; // Código único do imóvel
-    protected String endereco; // Endereço do imóvel
-    protected double valorLocacao; // Valor base da locação
+    protected String endereco; // Endereco do imóvel
+    protected double valorLocacao; // Valor base da locacão
     protected int vagasGaragem; // Número de vagas na garagem
     protected int quartos; // Número de quartos
     protected int banheiros; // Número de banheiros
@@ -24,8 +24,8 @@ public abstract class Imovel {
      * Construtor da classe Imovel.
      * 
      * @param codigo Código único do imóvel.
-     * @param endereco Endereço do imóvel.
-     * @param valorLocacao Valor base da locação.
+     * @param endereco Endereco do imóvel.
+     * @param valorLocacao Valor base da locacão.
      * @param vagasGaragem Número de vagas na garagem.
      * @param quartos Número de quartos.
      * @param banheiros Número de banheiros.
@@ -47,9 +47,9 @@ public abstract class Imovel {
     public abstract double calcularAluguel();
 
     /**
-     * Retorna o endereço do imóvel.
+     * Retorna o endereco do imóvel.
      * 
-     * @return Endereço do imóvel.
+     * @return Endereco do imóvel.
      */
     public String getEndereco() {
         return endereco;
@@ -66,9 +66,9 @@ public abstract class Imovel {
     }
 
     /**
-     * Retorna o valor base da locação.
+     * Retorna o valor base da locacão.
      * 
-     * @return Valor base da locação.
+     * @return Valor base da locacão.
      */
     public double getValorLocacao() {
         return valorLocacao;

@@ -20,7 +20,7 @@ public class Corretor extends Pessoa implements RecebeValor {
      * 
      * @param nome Nome do corretor.
      * @param telefone Telefone do corretor.
-     * @param endereco Endereço do corretor.
+     * @param endereco Endereco do corretor.
      * @param cpf CPF do corretor.
      * @param registro Registro do corretor.
      * @param dataAdmissao Data de admissão.
@@ -90,7 +90,7 @@ public class Corretor extends Pessoa implements RecebeValor {
     public String toString() {
         return "Corretor: " + nome + "\n" +
                "Telefone: " + telefone + "\n" +
-               "Endereço: " + endereco + "\n" +
+               "Endereco: " + endereco + "\n" +
                "CPF: " + cpf + "\n" +
                "Registro: " + registro + "\n" +
                "Data de Admissao: " + dataAdmissao + "\n" +

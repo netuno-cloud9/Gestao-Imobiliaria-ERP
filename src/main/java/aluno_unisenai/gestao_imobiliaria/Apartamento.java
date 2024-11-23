@@ -15,8 +15,8 @@ public class Apartamento extends Imovel {
      * Construtor da classe Apartamento.
      *
      * @param codigo        Código do apartamento.
-     * @param endereco      Endereço do apartamento.
-     * @param valorLocacao  Valor base da locação.
+     * @param endereco      Endereco do apartamento.
+     * @param valorLocacao  Valor base da locacão.
      * @param vagasGaragem  Número de vagas na garagem.
      * @param quartos       Número de quartos.
      * @param banheiros     Número de banheiros.
@@ -38,7 +38,7 @@ public class Apartamento extends Imovel {
 
     /**
      * Sobrescreve o método calcularAluguel da classe Imovel.
-     * Calcula o valor do aluguel com base no valor de locação,
+     * Calcula o valor do aluguel com base no valor de locacão,
      * adicionando o condomínio e subtraindo o fundo de reserva e investimentos.
      *
      * @return O valor calculado do aluguel.
@@ -49,7 +49,7 @@ public class Apartamento extends Imovel {
     }
 
     /**
-     * Sobrescreve o método toString para fornecer uma representação textual detalhada do apartamento.
+     * Sobrescreve o método toString para fornecer uma representacão textual detalhada do apartamento.
      *
      * @return String contendo os detalhes do apartamento.
      */
@@ -58,7 +58,7 @@ public class Apartamento extends Imovel {
         return "Apartamento {" +
                 "Codigo: " + codigo +
                 ", Endereco: " + endereco +
-                ", Valor de Locação: R$" + valorLocacao +
+                ", Valor de Locacao: R$" + valorLocacao +
                 ", Vagas na Garagem: " + vagasGaragem +
                 ", Quartos: " + quartos +
                 ", Banheiros: " + banheiros +
