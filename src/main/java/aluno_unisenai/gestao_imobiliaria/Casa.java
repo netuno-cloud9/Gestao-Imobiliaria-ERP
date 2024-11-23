@@ -1,23 +1,56 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package aluno_unisenai.gestao_imobiliaria;
 
 /**
- *
- * @author instrutor
+ * Classe Casa que representa um imóvel do tipo casa.
+ * Sobrescreve o método calcularAluguel e adiciona uma implementação para toString.
  */
 public class Casa extends Imovel {
-    private int qtdeAndares;
 
-    public Casa(int codigo, String endereco, double valorLocacao, int vagasGaragem, int quartos, int banheiros, int qtdeAndares) {
+    // Atributo específico de Casa
+    private final int numeroAndares;
+
+    /**
+     * Construtor da classe Casa.
+     * 
+     * @param codigo Código único da casa.
+     * @param endereco Endereço da casa.
+     * @param valorLocacao Valor base da locação.
+     * @param vagasGaragem Número de vagas na garagem.
+     * @param quartos Número de quartos.
+     * @param banheiros Número de banheiros.
+     * @param numeroAndares Número de andares da casa.
+     */
+    public Casa(int codigo, String endereco, double valorLocacao, int vagasGaragem, int quartos, int banheiros, int numeroAndares) {
         super(codigo, endereco, valorLocacao, vagasGaragem, quartos, banheiros);
-        this.qtdeAndares = qtdeAndares;
+        this.numeroAndares = numeroAndares;
     }
 
+    /**
+     * Implementação do método calcularAluguel.
+     * Calcula o aluguel com base no valor da locação.
+     * 
+     * @return Valor do aluguel.
+     */
     @Override
     public double calcularAluguel() {
         return valorLocacao;
+    }
+
+    /**
+     * Sobrescreve o método toString para fornecer informações detalhadas da casa.
+     * 
+     * @return String contendo os detalhes da casa.
+     */
+    @Override
+    public String toString() {
+        return "Casa {" +
+                "Código: " + codigo +
+                ", Endereço: " + endereco +
+                ", Valor de Locação: R$" + valorLocacao +
+                ", Vagas na Garagem: " + vagasGaragem +
+                ", Quartos: " + quartos +
+                ", Banheiros: " + banheiros +
+                ", Número de Andares: " + numeroAndares +
+                '}';
     }
 }

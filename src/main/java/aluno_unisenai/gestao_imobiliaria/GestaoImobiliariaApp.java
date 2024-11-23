@@ -28,24 +28,35 @@ public class GestaoImobiliariaApp {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(800, 600);
 
-        // Painel de Inputs com Abas
+        // Painel de Registro de Dados com Abas
         JTabbedPane tabbedPane = new JTabbedPane();
         tabbedPane.addTab("Corretor", createCorretorPanel());
         tabbedPane.addTab("Proprietário", createProprietarioPanel());
         tabbedPane.addTab("Locatário", createLocatarioPanel());
         tabbedPane.addTab("Imóvel", createImovelPanel());
 
-        // Painel de Relatório
-        JPanel relatorioPanel = new JPanel(new BorderLayout());
-        relatorioPanel.setBorder(BorderFactory.createTitledBorder("Relatório"));
-        relatorioTextArea = new JTextArea();
-        relatorioTextArea.setEditable(false); // Somente leitura
-        relatorioTextArea.setLineWrap(true);
-        relatorioTextArea.setWrapStyleWord(true);
-        JScrollPane scrollPane = new JScrollPane(relatorioTextArea);
-        relatorioPanel.add(scrollPane, BorderLayout.CENTER);
+        JPanel dataRegistrationPanel = new JPanel(new BorderLayout());
+        dataRegistrationPanel.add(tabbedPane, BorderLayout.CENTER);
 
-        // Painel de Pesquisa e Filtros
+        // Painel de Operações
+        JPanel operationsPanel = createOperationsPanel();
+
+        // Divisor Principal entre Registro de Dados e Operações
+        JSplitPane mainSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, dataRegistrationPanel, operationsPanel);
+        mainSplitPane.setDividerLocation(400);
+        mainSplitPane.setResizeWeight(0.5);
+
+        // Configuração Principal do Frame
+        frame.setLayout(new BorderLayout());
+        frame.add(mainSplitPane, BorderLayout.CENTER);
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+    }
+
+    private JPanel createOperationsPanel() {
+        JPanel operationsPanel = new JPanel(new BorderLayout());
+
+        // Painel de Busca e Filtros
         JPanel searchPanel = new JPanel();
         searchPanel.setLayout(new GridBagLayout());
         searchPanel.setBorder(BorderFactory.createTitledBorder("Busca e Filtros"));
@@ -77,64 +88,80 @@ public class GestaoImobiliariaApp {
         searchButton.addActionListener(e -> filtrarRelatorio());
         searchPanel.add(searchButton, gbc);
 
-        relatorioPanel.add(searchPanel, BorderLayout.NORTH);
+        // Adiciona o painel de busca ao topo do painel de operações
+        operationsPanel.add(searchPanel, BorderLayout.NORTH);
 
-        // Divisor entre Inputs e Relatório
-        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, tabbedPane, relatorioPanel);
-        splitPane.setDividerLocation(400);
-        splitPane.setResizeWeight(0.5);
+        // Painel de Botões de Operação
+        JPanel operationButtonsPanel = new JPanel();
+        operationButtonsPanel.setLayout(new GridBagLayout());
+        operationButtonsPanel.setBorder(BorderFactory.createTitledBorder("Operações"));
 
-        // Botão no Rodapé
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        JButton emitirRelatorioButton = new JButton("Emitir Relatório");
-        emitirRelatorioButton.setPreferredSize(new Dimension(200, 30));
-        emitirRelatorioButton.addActionListener(e -> emitirRelatorio());
-        buttonPanel.add(emitirRelatorioButton);
+        GridBagConstraints gbcOp = new GridBagConstraints();
+        gbcOp.insets = new Insets(5, 5, 5, 5);
+        gbcOp.fill = GridBagConstraints.HORIZONTAL;
+        gbcOp.gridx = 0;
+        gbcOp.gridy = 0;
 
-        // Configuração Principal do Frame
-        frame.setLayout(new BorderLayout());
-        frame.add(splitPane, BorderLayout.CENTER);
-        frame.add(buttonPanel, BorderLayout.SOUTH);
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
+        // Campo de Valor
+        operationButtonsPanel.add(new JLabel("Valor:"), gbcOp);
+        gbcOp.gridx = 1;
+        JTextField valorField = new JTextField(10);
+        operationButtonsPanel.add(valorField, gbcOp);
+
+        // Botões
+        gbcOp.gridx = 0;
+        gbcOp.gridy = 1;
+        JButton receberButton = new JButton("Registrar Recebimento");
+        receberButton.addActionListener(e -> {
+            try {
+                double valor = Double.parseDouble(valorField.getText());
+                corretor.receber(valor);
+                atualizarRelatorio();
+                JOptionPane.showMessageDialog(operationsPanel, "Recebimento registrado com sucesso!");
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(operationsPanel, "Insira um valor válido!", "Erro", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+        operationButtonsPanel.add(receberButton, gbcOp);
+
+        gbcOp.gridx = 1;
+        JButton sacarButton = new JButton("Sacar Comissão");
+        sacarButton.addActionListener(e -> {
+            try {
+                double valor = Double.parseDouble(valorField.getText());
+                corretor.sacarComissoes(valor);
+                atualizarRelatorio();
+                JOptionPane.showMessageDialog(operationsPanel, "Saque realizado com sucesso!");
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(operationsPanel, "Insira um valor válido!", "Erro", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+        operationButtonsPanel.add(sacarButton, gbcOp);
+
+        // Adiciona o painel de botões de operação ao centro do painel de operações
+        operationsPanel.add(operationButtonsPanel, BorderLayout.CENTER);
+
+        // Painel de Relatório
+        JPanel relatorioPanel = new JPanel(new BorderLayout());
+        relatorioPanel.setBorder(BorderFactory.createTitledBorder("Relatório"));
+        relatorioTextArea = new JTextArea();
+        relatorioTextArea.setEditable(false); // Somente leitura
+        relatorioTextArea.setLineWrap(true);
+        relatorioTextArea.setWrapStyleWord(true);
+        JScrollPane scrollPane = new JScrollPane(relatorioTextArea);
+        relatorioPanel.add(scrollPane, BorderLayout.CENTER);
+
+        // Adiciona o painel de relatório ao sul do painel de operações
+        operationsPanel.add(relatorioPanel, BorderLayout.SOUTH);
+
+        return operationsPanel;
     }
 
     private JPanel createCorretorPanel() {
         JPanel panel = createFormPanel("Informações do Corretor",
                 new String[]{"Nome", "Telefone", "Endereço", "CPF", "Registro", "Comissão (%)"});
 
-        // Adicionar botões e campos para interagir com métodos da classe Corretor
-        JButton receberButton = new JButton("Registrar Recebimento");
-        JButton sacarButton = new JButton("Sacar Comissão");
-        JTextField valorField = new JTextField(10);
-
-        receberButton.addActionListener(e -> {
-            try {
-                double valor = Double.parseDouble(valorField.getText());
-                corretor.receber(valor);
-                atualizarRelatorio();
-                JOptionPane.showMessageDialog(panel, "Recebimento registrado com sucesso!");
-            } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(panel, "Insira um valor válido!", "Erro", JOptionPane.ERROR_MESSAGE);
-            }
-        });
-
-        sacarButton.addActionListener(e -> {
-            try {
-                double valor = Double.parseDouble(valorField.getText());
-                corretor.sacarComissoes(valor);
-                atualizarRelatorio();
-                JOptionPane.showMessageDialog(panel, "Saque realizado com sucesso!");
-            } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(panel, "Insira um valor válido!", "Erro", JOptionPane.ERROR_MESSAGE);
-            }
-        });
-
-        panel.add(new JLabel("Valor:"), BorderLayout.CENTER);
-        panel.add(valorField, BorderLayout.CENTER);
-        panel.add(receberButton, BorderLayout.CENTER);
-        panel.add(sacarButton, BorderLayout.CENTER);
+        // Removemos os botões e campos de operação daqui
 
         return panel;
     }

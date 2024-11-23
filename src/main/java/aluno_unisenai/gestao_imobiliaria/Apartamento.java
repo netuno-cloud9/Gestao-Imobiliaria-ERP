@@ -1,12 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package aluno_unisenai.gestao_imobiliaria;
 
 /**
- *
- * @author instrutor
+ * Classe Apartamento que representa um tipo específico de imóvel.
+ * Estende a classe abstrata Imovel e implementa o método calcularAluguel.
  */
 public class Apartamento extends Imovel {
     private int andar;
@@ -15,7 +11,23 @@ public class Apartamento extends Imovel {
     private double fundoReserva;
     private double investimentos;
 
-    public Apartamento(int codigo, String endereco, double valorLocacao, int vagasGaragem, int quartos, int banheiros, int andar, int numero, double condominio, double fundoReserva, double investimentos) {
+    /**
+     * Construtor da classe Apartamento.
+     *
+     * @param codigo        Código do apartamento.
+     * @param endereco      Endereço do apartamento.
+     * @param valorLocacao  Valor base da locação.
+     * @param vagasGaragem  Número de vagas na garagem.
+     * @param quartos       Número de quartos.
+     * @param banheiros     Número de banheiros.
+     * @param andar         Andar do apartamento.
+     * @param numero        Número do apartamento.
+     * @param condominio    Valor do condomínio.
+     * @param fundoReserva  Valor destinado ao fundo de reserva.
+     * @param investimentos Valor destinado a investimentos.
+     */
+    public Apartamento(int codigo, String endereco, double valorLocacao, int vagasGaragem, int quartos, int banheiros, 
+                       int andar, int numero, double condominio, double fundoReserva, double investimentos) {
         super(codigo, endereco, valorLocacao, vagasGaragem, quartos, banheiros);
         this.andar = andar;
         this.numero = numero;
@@ -24,10 +36,79 @@ public class Apartamento extends Imovel {
         this.investimentos = investimentos;
     }
 
+    /**
+     * Sobrescreve o método calcularAluguel da classe Imovel.
+     * Calcula o valor do aluguel com base no valor de locação,
+     * adicionando o condomínio e subtraindo o fundo de reserva e investimentos.
+     *
+     * @return O valor calculado do aluguel.
+     */
     @Override
     public double calcularAluguel() {
         return valorLocacao + condominio - fundoReserva - investimentos;
     }
+
+    /**
+     * Sobrescreve o método toString para fornecer uma representação textual detalhada do apartamento.
+     *
+     * @return String contendo os detalhes do apartamento.
+     */
+    @Override
+    public String toString() {
+        return "Apartamento {" +
+                "Código: " + codigo +
+                ", Endereço: " + endereco +
+                ", Valor de Locação: R$" + valorLocacao +
+                ", Vagas na Garagem: " + vagasGaragem +
+                ", Quartos: " + quartos +
+                ", Banheiros: " + banheiros +
+                ", Andar: " + andar +
+                ", Número: " + numero +
+                ", Condomínio: R$" + condominio +
+                ", Fundo de Reserva: R$" + fundoReserva +
+                ", Investimentos: R$" + investimentos +
+                '}';
+    }
+
+    // Getters e Setters opcionais, dependendo da necessidade
+
+    public int getAndar() {
+        return andar;
+    }
+
+    public void setAndar(int andar) {
+        this.andar = andar;
+    }
+
+    public int getNumero() {
+        return numero;
+    }
+
+    public void setNumero(int numero) {
+        this.numero = numero;
+    }
+
+    public double getCondominio() {
+        return condominio;
+    }
+
+    public void setCondominio(double condominio) {
+        this.condominio = condominio;
+    }
+
+    public double getFundoReserva() {
+        return fundoReserva;
+    }
+
+    public void setFundoReserva(double fundoReserva) {
+        this.fundoReserva = fundoReserva;
+    }
+
+    public double getInvestimentos() {
+        return investimentos;
+    }
+
+    public void setInvestimentos(double investimentos) {
+        this.investimentos = investimentos;
+    }
 }
-
-
