@@ -35,6 +35,18 @@
             <version>5.11.3</version>
             <type>jar</type>
         </dependency>
+        <dependency>
+            <groupId>com.computablefacts</groupId>
+            <artifactId>nona</artifactId>
+            <version>4.3</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>com.github.jstrainer</groupId>
+            <artifactId>jstrainer</artifactId>
+            <version>1.0.0</version>
+            <type>jar</type>
+        </dependency>
     </dependencies>
 
     <build>
