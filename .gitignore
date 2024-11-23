@@ -1,0 +1,19 @@
+# Ignorar pastas e arquivos gerados automaticamente
+target/
+*.class
+*.jar
+
+# Arquivos de configuração da IDE
+*.iml
+.idea/
+.vscode/
+*.log
+
+# Outros arquivos temporários
+*.tmp
+*.out
+*.bak
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
