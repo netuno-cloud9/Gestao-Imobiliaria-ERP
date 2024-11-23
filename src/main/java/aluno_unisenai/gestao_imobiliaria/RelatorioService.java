@@ -13,6 +13,6 @@ public class RelatorioService {
         if (nomeCorretor == null || nomeCorretor.isBlank()) {
             throw new IllegalArgumentException("Nome do corretor não pode ser vazio.");
         }
-        return "Relatório emitido para: " + nomeCorretor;
+        return "Relatorio emitido para: " + nomeCorretor;
     }
 }

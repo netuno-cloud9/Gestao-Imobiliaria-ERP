@@ -56,15 +56,15 @@ public class Apartamento extends Imovel {
     @Override
     public String toString() {
         return "Apartamento {" +
-                "Código: " + codigo +
-                ", Endereço: " + endereco +
+                "Codigo: " + codigo +
+                ", Endereco: " + endereco +
                 ", Valor de Locação: R$" + valorLocacao +
                 ", Vagas na Garagem: " + vagasGaragem +
                 ", Quartos: " + quartos +
                 ", Banheiros: " + banheiros +
                 ", Andar: " + andar +
-                ", Número: " + numero +
-                ", Condomínio: R$" + condominio +
+                ", Numero: " + numero +
+                ", Condominio: R$" + condominio +
                 ", Fundo de Reserva: R$" + fundoReserva +
                 ", Investimentos: R$" + investimentos +
                 '}';

@@ -45,8 +45,8 @@ public class Locacao {
      */
     public void enviarCobranca() {
         double valorAluguel = imovel.calcularAluguel();
-        System.out.println("E-mail do locatário: " + locatario.getEmail());
-        System.out.println("O valor referente ao seu aluguel neste mês foi de R$" + valorAluguel);
+        System.out.println("E-mail do locatario: " + locatario.getEmail());
+        System.out.println("O valor referente ao seu aluguel neste mes foi de R$" + valorAluguel);
     }
 
     /**
@@ -64,9 +64,9 @@ public class Locacao {
         corretor.receber(comissaoCorretor);
 
         // Mensagens no console
-        System.out.println("Pagamento realizado ao proprietário " + proprietario.getNome() +
+        System.out.println("Pagamento realizado ao proprietario " + proprietario.getNome() +
                            " no valor de R$" + valorLiquido);
-        System.out.println("Comissão de R$" + comissaoCorretor + " paga ao corretor " + corretor.getNome());
+        System.out.println("Comissao de R$" + comissaoCorretor + " paga ao corretor " + corretor.getNome());
     }
 
     /**

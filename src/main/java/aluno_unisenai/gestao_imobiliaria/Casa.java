@@ -44,13 +44,13 @@ public class Casa extends Imovel {
     @Override
     public String toString() {
         return "Casa {" +
-                "Código: " + codigo +
+                "Codigo: " + codigo +
                 ", Endereço: " + endereco +
-                ", Valor de Locação: R$" + valorLocacao +
+                ", Valor de Locacao: R$" + valorLocacao +
                 ", Vagas na Garagem: " + vagasGaragem +
                 ", Quartos: " + quartos +
                 ", Banheiros: " + banheiros +
-                ", Número de Andares: " + numeroAndares +
+                ", Numero de Andares: " + numeroAndares +
                 '}';
     }
 }

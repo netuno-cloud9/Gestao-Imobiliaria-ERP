@@ -1,219 +1,236 @@
 package aluno_unisenai.gestao_imobiliaria;
 
-import javax.swing.*;
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Date;
+import java.util.Scanner;
 
 public class GestaoImobiliariaApp {
 
-    private JTextArea relatorioTextArea;
-    private JTextField searchField;
-    private JComboBox<String> filterComboBox;
-
-    private final List<String> dadosRelatorio = new ArrayList<>();
-
-    // Simulação de um corretor
-    private final Corretor corretor = new Corretor("João da Silva", "(11) 98765-4321", "Rua das Flores, 123", "123.456.789-00", "1234-AB", new java.util.Date(), 0.05);
-
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            new GestaoImobiliariaApp().createAndShowUI();
-        });
-    }
+        System.out.println("=== GESTAO IMOBILIARIA ===");
+        
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Deseja inserir dados manualmente ou gerar relatorio de teste automaticamente?");
+        System.out.println("Digite '1' para inserir manualmente ou '2' para gerar automaticamente:");
+        int escolha = scanner.nextInt();
+        scanner.nextLine(); // consumir a quebra de linha
+        
+        Corretor corretor = null;
+        Proprietario proprietario = null;
+        Locatario locatario = null;
+        Imovel imovel = null;
+        Locacao locacao = null;
+        
+        if (escolha == 1) {
+            // Insercao manual de dados
+            System.out.println("\n=== Insercao de Dados Manual ===");
+            
+            corretor = criarCorretor(scanner);
+            proprietario = criarProprietario(scanner);
+            locatario = criarLocatario(scanner);
+            
+            // Perguntar se o imovel e casa ou apartamento
+            System.out.println("O imovel e uma casa ou um apartamento?");
+            System.out.println("Digite '1' para Casa ou '2' para Apartamento:");
+            int tipoImovel = scanner.nextInt();
+            scanner.nextLine(); // consumir a quebra de linha
 
-    private void createAndShowUI() {
-        JFrame frame = new JFrame("Gestão Imobiliária");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(800, 600);
-
-        // Painel de Registro de Dados com Abas
-        JTabbedPane tabbedPane = new JTabbedPane();
-        tabbedPane.addTab("Corretor", createCorretorPanel());
-        tabbedPane.addTab("Proprietário", createProprietarioPanel());
-        tabbedPane.addTab("Locatário", createLocatarioPanel());
-        tabbedPane.addTab("Imóvel", createImovelPanel());
-
-        JPanel dataRegistrationPanel = new JPanel(new BorderLayout());
-        dataRegistrationPanel.add(tabbedPane, BorderLayout.CENTER);
-
-        // Painel de Operações
-        JPanel operationsPanel = createOperationsPanel();
-
-        // Divisor Principal entre Registro de Dados e Operações
-        JSplitPane mainSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, dataRegistrationPanel, operationsPanel);
-        mainSplitPane.setDividerLocation(400);
-        mainSplitPane.setResizeWeight(0.5);
-
-        // Configuração Principal do Frame
-        frame.setLayout(new BorderLayout());
-        frame.add(mainSplitPane, BorderLayout.CENTER);
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
-    }
-
-    private JPanel createOperationsPanel() {
-        JPanel operationsPanel = new JPanel(new BorderLayout());
-
-        // Painel de Busca e Filtros
-        JPanel searchPanel = new JPanel();
-        searchPanel.setLayout(new GridBagLayout());
-        searchPanel.setBorder(BorderFactory.createTitledBorder("Busca e Filtros"));
-
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(5, 5, 5, 5);
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-
-        // Campo de busca
-        searchPanel.add(new JLabel("Buscar:"), gbc);
-        gbc.gridx = 1;
-        searchField = new JTextField(20);
-        searchPanel.add(searchField, gbc);
-
-        // Combobox de filtro
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        searchPanel.add(new JLabel("Filtro:"), gbc);
-        gbc.gridx = 1;
-        filterComboBox = new JComboBox<>(new String[]{"Todos", "Corretor", "Proprietário", "Locatário", "Imóvel"});
-        searchPanel.add(filterComboBox, gbc);
-
-        // Botão de pesquisa
-        gbc.gridx = 1;
-        gbc.gridy = 2;
-        JButton searchButton = new JButton("Pesquisar");
-        searchButton.addActionListener(e -> filtrarRelatorio());
-        searchPanel.add(searchButton, gbc);
-
-        // Adiciona o painel de busca ao topo do painel de operações
-        operationsPanel.add(searchPanel, BorderLayout.NORTH);
-
-        // Painel de Botões de Operação
-        JPanel operationButtonsPanel = new JPanel();
-        operationButtonsPanel.setLayout(new GridBagLayout());
-        operationButtonsPanel.setBorder(BorderFactory.createTitledBorder("Operações"));
-
-        GridBagConstraints gbcOp = new GridBagConstraints();
-        gbcOp.insets = new Insets(5, 5, 5, 5);
-        gbcOp.fill = GridBagConstraints.HORIZONTAL;
-        gbcOp.gridx = 0;
-        gbcOp.gridy = 0;
-
-        // Campo de Valor
-        operationButtonsPanel.add(new JLabel("Valor:"), gbcOp);
-        gbcOp.gridx = 1;
-        JTextField valorField = new JTextField(10);
-        operationButtonsPanel.add(valorField, gbcOp);
-
-        // Botões
-        gbcOp.gridx = 0;
-        gbcOp.gridy = 1;
-        JButton receberButton = new JButton("Registrar Recebimento");
-        receberButton.addActionListener(e -> {
-            try {
-                double valor = Double.parseDouble(valorField.getText());
-                corretor.receber(valor);
-                atualizarRelatorio();
-                JOptionPane.showMessageDialog(operationsPanel, "Recebimento registrado com sucesso!");
-            } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(operationsPanel, "Insira um valor válido!", "Erro", JOptionPane.ERROR_MESSAGE);
+            if (tipoImovel == 1) {
+                imovel = criarCasa(scanner);
+            } else if (tipoImovel == 2) {
+                imovel = criarApartamento(scanner);
+            } else {
+                System.out.println("Opcao invalida para tipo de imovel.");
+                scanner.close();
+                return;
             }
-        });
-        operationButtonsPanel.add(receberButton, gbcOp);
-
-        gbcOp.gridx = 1;
-        JButton sacarButton = new JButton("Sacar Comissão");
-        sacarButton.addActionListener(e -> {
-            try {
-                double valor = Double.parseDouble(valorField.getText());
-                corretor.sacarComissoes(valor);
-                atualizarRelatorio();
-                JOptionPane.showMessageDialog(operationsPanel, "Saque realizado com sucesso!");
-            } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(operationsPanel, "Insira um valor válido!", "Erro", JOptionPane.ERROR_MESSAGE);
-            }
-        });
-        operationButtonsPanel.add(sacarButton, gbcOp);
-
-        // Adiciona o painel de botões de operação ao centro do painel de operações
-        operationsPanel.add(operationButtonsPanel, BorderLayout.CENTER);
-
-        // Painel de Relatório
-        JPanel relatorioPanel = new JPanel(new BorderLayout());
-        relatorioPanel.setBorder(BorderFactory.createTitledBorder("Relatório"));
-        relatorioTextArea = new JTextArea();
-        relatorioTextArea.setEditable(false); // Somente leitura
-        relatorioTextArea.setLineWrap(true);
-        relatorioTextArea.setWrapStyleWord(true);
-        JScrollPane scrollPane = new JScrollPane(relatorioTextArea);
-        relatorioPanel.add(scrollPane, BorderLayout.CENTER);
-
-        // Adiciona o painel de relatório ao sul do painel de operações
-        operationsPanel.add(relatorioPanel, BorderLayout.SOUTH);
-
-        return operationsPanel;
-    }
-
-    private JPanel createCorretorPanel() {
-        JPanel panel = createFormPanel("Informações do Corretor",
-                new String[]{"Nome", "Telefone", "Endereço", "CPF", "Registro", "Comissão (%)"});
-
-        // Removemos os botões e campos de operação daqui
-
-        return panel;
-    }
-
-    private JPanel createProprietarioPanel() {
-        return createFormPanel("Informações do Proprietário",
-                new String[]{"Nome", "Telefone", "Endereço", "CPF", "Conta", "Agência"});
-    }
-
-    private JPanel createLocatarioPanel() {
-        return createFormPanel("Informações do Locatário",
-                new String[]{"Nome", "Telefone", "Endereço", "CPF", "Email", "Salário"});
-    }
-
-    private JPanel createImovelPanel() {
-        return createFormPanel("Informações do Imóvel",
-                new String[]{"Código", "Endereço", "Valor de Locação", "Vagas na Garagem", "Quartos", "Banheiros"});
-    }
-
-    private JPanel createFormPanel(String title, String[] labels) {
-        JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(0, 2));
-        panel.setBorder(BorderFactory.createTitledBorder(title));
-
-        for (String label : labels) {
-            panel.add(new JLabel(label + ":"));
-            panel.add(new JTextField(15));
+            
+            // Criacao de locacao
+            locacao = new Locacao(imovel, locatario, corretor, proprietario, new Date());
+            
+        } else if (escolha == 2) {
+            // Geracao automatica de dados de teste com contexto de Feira de Santana, Bahia
+            
+            // Criacao de um corretor
+            corretor = new Corretor("John Lenon", "(75) 98765-4321", "Rua das Flores, 123, Feira de Santana, Bahia",
+                    "123.456.789-00", "1234-BA", new Date(), 0.05);
+    
+            // Criacao de um proprietario
+            proprietario = new Proprietario("Bob Dylan", "(75) 91234-5678",
+                    "Rua dos Pinheiros, 456, Feira de Santana, Bahia", "987.654.321-00", "12345-6", "001");
+    
+            // Criacao de um locatario
+            locatario = new Locatario("Garfield o Gato", "(75) 99876-5432",
+                    "Av. Getulio Vargas, 789, Feira de Santana, Bahia", "321.654.987-00", "garfield@gmail.com", 5000);
+    
+            // Criacao de um imovel (por exemplo, Casa)
+            imovel = new Casa(101, "Rua das Palmeiras, 123, Feira de Santana, Bahia", 2000, 2, 3, 2, 1);
+    
+            // Criacao de uma locacao
+            locacao = new Locacao(imovel, locatario, corretor, proprietario, new Date());
+            
+        } else {
+            System.out.println("Opcao invalida.");
+            scanner.close();
+            return;
         }
-
-        return panel;
+        
+        // Codigo comum para ambas as opcoes
+        
+        // Calculo do aluguel do imovel
+        System.out.println("\nCalculo do aluguel do imovel");
+        System.out.println("Aluguel calculado: R$" + imovel.calcularAluguel());
+    
+        // Exibicao de detalhes do imovel
+        System.out.println("\nDetalhes do imovel");
+        System.out.println(imovel); // Sobrescrita do metodo toString
+    
+        // Envio de cobranca para o locatario
+        System.out.println("\nCobranca enviada para o locatario");
+        locacao.enviarCobranca();
+    
+        // Pagamento ao proprietario
+        System.out.println("\nPagamento realizado ao proprietario");
+        locacao.pagarProprietario();
+    
+        // Registro de recebimento pelo corretor
+        System.out.println("\nRecebimento registrado pelo corretor");
+        corretor.receber(imovel.calcularAluguel()); // Valor do aluguel para verificar comportamento
+        System.out.println("Saldo de comissoes acumuladas: R$" + corretor.getSaldoComissoes());
+    
+        // Saque da comissao do corretor
+        System.out.println("\nSaque de comissao do corretor");
+        corretor.sacarComissoes(100); // Valor valido
+        corretor.sacarComissoes(10000); // Valor invalido (excede saldo)
+    
+        // Verificacao do saldo do proprietario
+        System.out.println("\nSaldo do proprietario");
+        System.out.println("Saldo de recebimentos: R$" + proprietario.getSaldoRecebimentos());
+    
+        // Geracao de relatorio personalizado
+        System.out.println("\nGeracao de relatorio para corretor");
+        RelatorioService relatorioService = new RelatorioService();
+        try {
+            System.out.println(relatorioService.gerarRelatorio(corretor.getNome()));
+        } catch (IllegalArgumentException e) {
+            System.out.println("Erro ao gerar relatorio: " + e.getMessage());
+        }
+    
+        // Finalizacao do programa
+        System.out.println("\n=== FIM DA GESTAO IMOBILIARIA ===");
+        
+        scanner.close();
     }
-
-    private void emitirRelatorio() {
-        atualizarRelatorio();
+    
+    private static Corretor criarCorretor(Scanner scanner) {
+        System.out.println("\nInsira os dados do corretor:");
+        System.out.print("Nome: ");
+        String nome = scanner.nextLine();
+        System.out.print("Telefone: ");
+        String telefone = scanner.nextLine();
+        System.out.print("Endereco: ");
+        String endereco = scanner.nextLine();
+        System.out.print("CPF: ");
+        String cpf = scanner.nextLine();
+        System.out.print("CRECI: ");
+        String creci = scanner.nextLine();
+        System.out.print("Data de contratacao (dd/mm/yyyy): ");
+        String dataStr = scanner.nextLine();
+        Date dataContratacao = parseDate(dataStr);
+        System.out.print("Comissao (%): ");
+        double comissao = scanner.nextDouble() / 100;
+        scanner.nextLine(); // consumir a quebra de linha
+        return new Corretor(nome, telefone, endereco, cpf, creci, dataContratacao, comissao);
     }
-
-    private void atualizarRelatorio() {
-        dadosRelatorio.clear();
-        dadosRelatorio.add("=== RELATÓRIO DE GESTÃO IMOBILIÁRIA ===\n");
-        dadosRelatorio.add(corretor.toString());
-        relatorioTextArea.setText(String.join("\n", dadosRelatorio));
+    
+    private static Proprietario criarProprietario(Scanner scanner) {
+        System.out.println("\nInsira os dados do proprietario:");
+        System.out.print("Nome: ");
+        String nome = scanner.nextLine();
+        System.out.print("Telefone: ");
+        String telefone = scanner.nextLine();
+        System.out.print("Endereco: ");
+        String endereco = scanner.nextLine();
+        System.out.print("CPF: ");
+        String cpf = scanner.nextLine();
+        System.out.print("RG: ");
+        String rg = scanner.nextLine();
+        System.out.print("Codigo do proprietario: ");
+        String codigoProprietario = scanner.nextLine();
+        return new Proprietario(nome, telefone, endereco, cpf, rg, codigoProprietario);
     }
-
-    private void filtrarRelatorio() {
-        String searchTerm = searchField.getText().toLowerCase();
-        String filter = (String) filterComboBox.getSelectedItem();
-
-        List<String> resultados = dadosRelatorio.stream()
-                .filter(linha -> filter.equals("Todos") || linha.toLowerCase().contains(filter.toLowerCase()))
-                .filter(linha -> linha.toLowerCase().contains(searchTerm))
-                .collect(Collectors.toList());
-
-        relatorioTextArea.setText(String.join("\n", resultados));
+    
+    private static Locatario criarLocatario(Scanner scanner) {
+        System.out.println("\nInsira os dados do locatario:");
+        System.out.print("Nome: ");
+        String nome = scanner.nextLine();
+        System.out.print("Telefone: ");
+        String telefone = scanner.nextLine();
+        System.out.print("Endereco: ");
+        String endereco = scanner.nextLine();
+        System.out.print("CPF: ");
+        String cpf = scanner.nextLine();
+        System.out.print("Email: ");
+        String email = scanner.nextLine();
+        System.out.print("Renda mensal: ");
+        double rendaMensal = scanner.nextDouble();
+        scanner.nextLine(); // consumir a quebra de linha
+        return new Locatario(nome, telefone, endereco, cpf, email, rendaMensal);
+    }
+    
+    private static Casa criarCasa(Scanner scanner) {
+        System.out.println("\nInsira os dados da casa:");
+        System.out.print("Codigo do imovel: ");
+        int codigo = scanner.nextInt();
+        scanner.nextLine(); // consumir a quebra de linha
+        System.out.print("Endereco: ");
+        String endereco = scanner.nextLine();
+        System.out.print("Valor do aluguel base: ");
+        double valorAluguelBase = scanner.nextDouble();
+        System.out.print("Numero de vagas de garagem: ");
+        int vagasGaragem = scanner.nextInt();
+        System.out.print("Numero de quartos: ");
+        int quartos = scanner.nextInt();
+        System.out.print("Numero de banheiros: ");
+        int banheiros = scanner.nextInt();
+        System.out.print("Numero de suites: ");
+        int suites = scanner.nextInt();
+        scanner.nextLine(); // consumir a quebra de linha
+        return new Casa(codigo, endereco, valorAluguelBase, vagasGaragem, quartos, banheiros, suites);
+    }
+    
+    private static Apartamento criarApartamento(Scanner scanner) {
+        System.out.println("\nInsira os dados do apartamento:");
+        System.out.print("Codigo do imovel: ");
+        int codigo = scanner.nextInt();
+        scanner.nextLine(); // consumir a quebra de linha
+        System.out.print("Endereco: ");
+        String endereco = scanner.nextLine();
+        System.out.print("Valor do aluguel base: ");
+        double valorAluguelBase = scanner.nextDouble();
+        System.out.print("Numero de vagas de garagem: ");
+        int vagasGaragem = scanner.nextInt();
+        System.out.print("Numero de quartos: ");
+        int quartos = scanner.nextInt();
+        System.out.print("Numero de banheiros: ");
+        int banheiros = scanner.nextInt();
+        System.out.print("Andar: ");
+        int andar = scanner.nextInt();
+        System.out.print("Numero do apartamento: ");
+        int numeroApartamento = scanner.nextInt();
+        System.out.print("Valor do condominio: ");
+        double valorCondominio = scanner.nextDouble();
+        System.out.print("Area privativa: ");
+        double areaPrivativa = scanner.nextDouble();
+        System.out.print("Area total: ");
+        double areaTotal = scanner.nextDouble();
+        scanner.nextLine(); // consumir a quebra de linha
+        return new Apartamento(codigo, endereco, valorAluguelBase, vagasGaragem, quartos, banheiros,
+                andar, numeroApartamento, valorCondominio, areaPrivativa, areaTotal);
+    }
+    
+    private static Date parseDate(String dateStr) {
+        // Implementar conversao de String para Date, assumindo formato dd/mm/yyyy
+        // Simplesmente retornando a data atual por simplicidade
+        return new Date();
     }
 }

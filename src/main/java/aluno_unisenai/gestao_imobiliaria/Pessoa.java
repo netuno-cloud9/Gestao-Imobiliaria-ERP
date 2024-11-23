@@ -69,5 +69,6 @@ public abstract class Pessoa {
      * 
      * @return String com detalhes específicos da pessoa.
      */
+    @Override
     public abstract String toString();
 }

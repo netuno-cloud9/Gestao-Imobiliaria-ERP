@@ -32,7 +32,7 @@ public class Proprietario extends Pessoa implements RecebeValor {
     @Override
     public void receber(double valor) {
         saldoRecebimentos += valor;
-        System.out.println("O proprietário " + nome + " recebeu o valor de R$" + valor);
+        System.out.println("O proprietario " + nome + " recebeu o valor de R$" + valor);
     }
 
     public double getSaldoRecebimentos() {
@@ -41,12 +41,12 @@ public class Proprietario extends Pessoa implements RecebeValor {
 
     @Override
     public String toString() {
-        return "Proprietário: " + nome + "\n" +
+        return "Proprietario: " + nome + "\n" +
                "Telefone: " + telefone + "\n" +
-               "Endereço: " + endereco + "\n" +
+               "Endereco: " + endereco + "\n" +
                "CPF: " + cpf + "\n" +
                "Conta Bancária: " + conta + "\n" +
-               "Agência: " + agencia + "\n" +
+               "Agencia: " + agencia + "\n" +
                "Saldo de Recebimentos: R$" + saldoRecebimentos;
     }
 }

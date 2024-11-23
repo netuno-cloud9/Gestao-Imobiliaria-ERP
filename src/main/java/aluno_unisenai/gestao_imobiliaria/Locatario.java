@@ -71,11 +71,11 @@ public class Locatario extends Pessoa {
      */
     @Override
     public String toString() {
-        return "Locatário: " + getNome() + "\n" +
+        return "Locatario: " + getNome() + "\n" +
                "Telefone: " + getTelefone() + "\n" +
                "Endereço: " + getEndereco() + "\n" +
                "CPF: " + getCpf() + "\n" +
                "Email: " + email + "\n" +
-               "Salário: R$" + salario;
+               "Salario: R$" + salario;
     }
 }

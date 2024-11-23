@@ -47,7 +47,7 @@ public class Corretor extends Pessoa implements RecebeValor {
         }
         double valorComissao = valor * comissao; // Calcula a comissão com base no percentual
         totalComissaoAcumulada += valorComissao;
-        System.out.println("O corretor " + nome + " recebeu R$" + valor + " com comissão de R$" + valorComissao);
+        System.out.println("O corretor " + nome + " recebeu R$" + valor + " com comissao de R$" + valorComissao);
     }
 
     /**
@@ -64,7 +64,7 @@ public class Corretor extends Pessoa implements RecebeValor {
             totalComissaoAcumulada -= valor;
             System.out.println("O corretor " + nome + " sacou R$" + valor + ". Saldo restante: R$" + totalComissaoAcumulada);
         } else {
-            System.out.println("Saldo insuficiente para saque de R$" + valor + ". Saldo disponível: R$" + totalComissaoAcumulada);
+            System.out.println("Saldo insuficiente para saque de R$" + valor + ". Saldo disponivel: R$" + totalComissaoAcumulada);
         }
     }
 
@@ -93,8 +93,8 @@ public class Corretor extends Pessoa implements RecebeValor {
                "Endereço: " + endereco + "\n" +
                "CPF: " + cpf + "\n" +
                "Registro: " + registro + "\n" +
-               "Data de Admissão: " + dataAdmissao + "\n" +
-               "Comissão (%): " + (comissao * 100) + "%\n" +
-               "Total de Comissões Acumuladas: R$" + totalComissaoAcumulada;
+               "Data de Admissao: " + dataAdmissao + "\n" +
+               "Comissao (%): " + (comissao * 100) + "%\n" +
+               "Total de Comissoes Acumuladas: R$" + totalComissaoAcumulada;
     }
 }
